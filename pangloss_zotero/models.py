@@ -7,6 +7,7 @@ from pydantic import HttpUrl
 from pangloss_core.models import BaseNode
 from pangloss_core.database import Database
 from pangloss_core.cypher_utils import cypher
+from pangloss_core.exceptions import PanglossConfigError
 
 from pangloss_zotero.zotero_types import ZoteroItemResponse
 
@@ -28,6 +29,9 @@ class ZoteroEntry(BaseNode):
     created_when: datetime.datetime
     modified_by: str
     modified_when: datetime.datetime
+
+    def __init_subclass__(cls):
+        raise PanglossConfigError("ZoteroEntry cannot be subclassed")
 
     @staticmethod
     def from_zotero_item_response(item: ZoteroItemResponse):

@@ -17,7 +17,7 @@ logger = logging.getLogger("uvicorn.info")
 
 ZOTERO_API_KEY: str = SETTINGS.ZOTERO_API_KEY # type: ignore
 ZOTERO_GROUP: str = SETTINGS.ZOTERO_GROUP # type: ignore
-
+ZOTERO_RUN_IN_DEV: bool = getattr(SETTINGS, "ZOTERO_RUN_IN_DEV", False)
 
 
 ZOTERO_WEBSOCKET_AUTH = {
@@ -150,7 +150,7 @@ class Zotero:
 
 
 
-@background_task(run_in_dev=True)
+@background_task(run_in_dev=ZOTERO_RUN_IN_DEV)
 async def zotero_listener():
     logger.info("Starting Zotero connection")
     await Zotero.synchronise_to_current()
