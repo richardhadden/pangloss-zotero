@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "pangloss-zotero"
+version = "0.1.0"
+description = ""
+authors = ["Richard Hadden <richard.hadden@oeaw.ac.at>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pangloss-core = {git = "https://github.com/richardhadden/pangloss-core.git"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
