@@ -3,7 +3,7 @@ import json
 import logging
 
 import httpx
-from rich import print
+
 import websockets
 
 from pangloss_core.background_tasks import background_task
@@ -136,7 +136,7 @@ class Zotero:
           
                 try:
                     await zotero_item.create_or_update()
-                    logger.info(f"Writing Zotero item {i}:", key)
+                    logger.info(f"Writing Zotero item {i}: {key}")
                 except Exception:
                     logger.error("Error writing Zotero item to database")
                 
@@ -169,7 +169,7 @@ async def zotero_listener():
             logger.error("Zotero websocket listener failed to connect")
         except Exception as e:
             logger.error("Error with Zotero websocket connection:", e)
-
+        await asyncio.sleep(2)
         try:
             logger.info("Starting Zotero websocket authentication.")
             await websocket.send(json.dumps(ZOTERO_WEBSOCKET_AUTH))
