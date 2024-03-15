@@ -57,3 +57,8 @@ class DefinitelyFactualStatement(BaseNode):
 ### Status
 
 As with Pangloss, do not use this for anything at all.
+
+
+### Tests
+
+Lacking!
