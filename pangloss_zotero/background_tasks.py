@@ -210,7 +210,7 @@ async def zotero_listener():
         while True:
             update_response = await websocket.recv()
             update_data = json.loads(update_response)
-            print("Update", update_data)
+            logger.info("Update to Zotero library received")
             if update_data["event"] == "topicUpdated":
                 await Zotero.synchronise_to_current()
 
