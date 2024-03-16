@@ -128,7 +128,7 @@ class Zotero:
         )
         try:
             for i, key in enumerate(updated_keys):
-                logger.info(f"Fetching Zotero item {i}:", key)
+                logger.info(f"Fetching Zotero item {i}: {key}")
                 try:
                     zotero_item, backoff_time = await Zotero.get_item(key)
                 except Exception:
@@ -158,6 +158,7 @@ async def zotero_listener():
     uri = "wss://stream.zotero.org"
 
     async with websockets.connect(uri, logger=logger) as websocket:
+        
         logger.info("Starting Zotero websocket connection.")
         connection_response = await websocket.recv()
         try:
@@ -208,11 +209,16 @@ async def zotero_listener():
         logger.info(f"Zotero websocket listener connected and authorised. Following changes of {str(ZOTERO_WEBSOCKET_AUTH['subscriptions'][0]["topics"])}")
 
         while True:
-            update_response = await websocket.recv()
-            update_data = json.loads(update_response)
-            logger.info("Update to Zotero library received")
-            if update_data["event"] == "topicUpdated":
-                await Zotero.synchronise_to_current()
+            try:
+                update_response = await websocket.recv()
+                update_data = json.loads(update_response)
+                logger.info("Update to Zotero library received")
+                if update_data["event"] == "topicUpdated":
+                    await Zotero.synchronise_to_current()
+            except websockets.exceptions.WebSocketException:
+                await asyncio.sleep(20)
+                return await(zotero_listener())
+                
 
 
 
