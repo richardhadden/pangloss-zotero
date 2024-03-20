@@ -112,6 +112,7 @@ class Zotero:
     async def synchronise_to_current(cls):
       
         current_version = await Zotero.get_current_database_version()
+        logger.info(f"Loaded Zotero Config with current version {current_version}")
     
 
         try:
@@ -131,8 +132,8 @@ class Zotero:
                 logger.info(f"Fetching Zotero item {i}: {key}")
                 try:
                     zotero_item, backoff_time = await Zotero.get_item(key)
-                except Exception:
-                    logger.error("Error getting Zotero Item")
+                except Exception as e:
+                    logger.error(f"Error getting Zotero Item: {str(e)}")
           
                 try:
                     await zotero_item.create_or_update()

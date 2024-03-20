@@ -1,18 +1,18 @@
 from __future__ import annotations
 
 import datetime
+import re
+import typing
+import uuid
 
 from pydantic import HttpUrl
 
-from pangloss_core.models import BaseNode
+from pangloss_core.models import BaseNode, BaseNodeReference
 from pangloss_core.database import Database
 from pangloss_core.cypher_utils import cypher
 from pangloss_core.exceptions import PanglossConfigError
 
 from pangloss_zotero.zotero_types import ZoteroItemResponse
-
-
-import re
 
 
 class ZoteroEntry(BaseNode):
@@ -30,6 +30,9 @@ class ZoteroEntry(BaseNode):
     modified_by: str
     modified_when: datetime.datetime
 
+    class Reference(BaseNodeReference):
+        citation: str
+
     def __init_subclass__(cls):
         raise PanglossConfigError("ZoteroEntry cannot be subclassed")
 
@@ -39,7 +42,7 @@ class ZoteroEntry(BaseNode):
 
         return __class__(
             label=label,
-            real_type="zoteroentry",
+            real_type="ZoteroEntry",
             zotero_key=item["key"],
             zotero_group_id=item["library"]["id"],
             zotero_group_name=item["library"]["name"],
