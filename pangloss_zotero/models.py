@@ -16,6 +16,10 @@ from pangloss_zotero.zotero_types import ZoteroItemResponse
 
 
 class ZoteroEntry(BaseNode):
+    __create__ = False
+    __edit__ = False
+    __delete__ = False
+
     zotero_key: str
     zotero_group_id: int
     zotero_group_name: str
