@@ -68,7 +68,7 @@ class ZoteroEntry(BaseNode):
         ) = cypher.unpack_properties_to_create_props_and_param_dict(
             self, skip_fields=["uid"], omit_braces=True
         )
-        print(node_props)
+
         key_identifier = cypher.get_unique_string()
         uid_identifier = cypher.get_unique_string()
 
